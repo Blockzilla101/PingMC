@@ -24,8 +24,9 @@ export class PacketManager {
 
     public createPingPacket(timestamp: number) {
         const bytes = new ByteSet(8, 'big');
-        bytes.write.uint32(timestamp & 0xf);
-        bytes.write.uint32(timestamp << 32);
+        // fixme: figure how to encode the timestamp properly
+        bytes.write.uint32(0);
+        bytes.write.uint32(timestamp);
         return this.createPacket(1, bytes.buffer);
     }
 

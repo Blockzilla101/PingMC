@@ -5,6 +5,6 @@ export interface IPacket {
     bytes: Uint8Array;
 }
 
-export interface IDecodedPacket extends IPacket {
-    result: IResult | any;
+export interface IDecodedPacket<Id extends (0 | 1)> extends IPacket {
+    result: Id extends 0 ? IResult : number;
 }
