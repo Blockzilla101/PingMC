@@ -1,7 +1,7 @@
 import * as varint from 'https://deno.land/x/varint@v2.0.0/varint.ts';
 import { ByteSet } from 'https://deno.land/x/bytes@1.0.3/mod.ts';
 
-export class PackageManager {
+export class PacketManager {
     constructor(private hostname: string, private port: number) {}
 
     public createPacket(packetId: number, data: Uint8Array) {
@@ -24,7 +24,7 @@ export class PackageManager {
 
     public createPingPacket(timestamp: number) {
         const bytes = new ByteSet(8, 'big');
-        bytes.write.uint32(0);
+        bytes.write.uint32(timestamp & 0xf);
         bytes.write.uint32(timestamp << 32);
         return this.createPacket(1, bytes.buffer);
     }
