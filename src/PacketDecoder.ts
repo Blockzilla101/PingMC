@@ -35,7 +35,6 @@ export class PacketDecoder {
                         this.pingPacket = this.decodePong(decodedPacket);
                         bytes.position = 0;
 
-                        console.log(this.finishResolve);
                         if (this.finishResolve != null) {
                             this.finishResolve();
                             this.finished = true;
