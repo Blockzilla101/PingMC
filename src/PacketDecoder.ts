@@ -47,6 +47,7 @@ export class PacketDecoder {
                     }
                 } catch (_e) {
                     // ignore incomplete packet errors
+                    console.debug(_e)
                 }
             },
         });

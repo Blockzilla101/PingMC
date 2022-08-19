@@ -19,7 +19,9 @@ export class PingMC {
                 reject(new Error('connection timed out'));
             }, 5 * 1000);
 
-            conn.readable.pipeTo(decoder.writeable);
+            conn.readable.pipeTo(decoder.writeable).catch(e => {
+                console.error(e)
+            });
 
             await decoder.finish();
             clearTimeout(timeout);
