@@ -20,6 +20,7 @@ export class PingMC {
             }, 5 * 1000);
 
             conn.readable.pipeTo(decoder.writeable).catch(e => {
+                console.error("[mc-ping] piping failed")
                 console.error(e)
             });
 
