@@ -47,7 +47,7 @@ export class PacketDecoder {
                     }
                 } catch (_e) {
                     // ignore incomplete packet errors
-                    console.debug(_e)
+                    console.debug(_e);
                 }
             },
         });
@@ -80,15 +80,18 @@ export class PacketDecoder {
 
     decodeHandshake(packet: IPacket): IDecodedPacket<0> {
         const responseLength = varint.decode32(packet.bytes, 0);
-        const decodedStr = new TextDecoder().decode(packet.bytes.slice(responseLength[1]));
-        if (responseLength[0] !== decodedStr.length) throw new Error('packet response field is not complete');
+        try {
+            const decodedStr = new TextDecoder().decode(packet.bytes.slice(responseLength[1]));
+            const response = JSON.parse(decodedStr);
 
-        const response = JSON.parse(decodedStr);
-
-        return {
-            ...packet,
-            result: new Result(response).parse(),
-        };
+            return {
+                ...packet,
+                result: new Result(response).parse(),
+            };
+        } catch (e) {
+            // fixme: find documentation for "fmlNetworkVersion 3" protocol
+            throw new Error('failed to read JSON response field', { cause: e });
+        }
     }
 
     public finish(): Promise<void> {
