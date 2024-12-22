@@ -81,7 +81,12 @@ export class PacketDecoder {
     decodeHandshake(packet: IPacket): IDecodedPacket<0> {
         const responseLength = varint.decode32(packet.bytes, 0);
         try {
-            const decodedStr = new TextDecoder().decode(packet.bytes.slice(responseLength[1]));
+            let decodedStr = new TextDecoder().decode(packet.bytes.slice(responseLength[1]));
+
+            if (decodedStr.includes('}W{')) {
+                decodedStr = decodedStr.split('}W{')[0] + '}';
+            }
+            
             const response = JSON.parse(decodedStr);
 
             return {
